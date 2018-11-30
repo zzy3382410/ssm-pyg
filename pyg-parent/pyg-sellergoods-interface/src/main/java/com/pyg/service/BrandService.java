@@ -16,4 +16,8 @@ public interface BrandService {
     void update(TbBrand brand);
 
     TbBrand findOne(Long id);
+
+    void delete(long[] ids);
+
+    PageResoult findPage(TbBrand brand,Integer page,Integer size);
 }

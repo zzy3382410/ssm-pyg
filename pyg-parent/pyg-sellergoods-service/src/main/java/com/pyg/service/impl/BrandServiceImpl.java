@@ -1,6 +1,7 @@
 package com.pyg.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.pyg.mapper.TbBrandMapper;
@@ -50,5 +51,29 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public TbBrand findOne(Long id) {
         return tbBrandMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public void delete(long[] ids) {
+        for (long id : ids) {
+            tbBrandMapper.deleteByPrimaryKey(id);
+        }
+    }
+
+    @Override
+    public PageResoult findPage(TbBrand brand, Integer page, Integer size) {
+        PageHelper.startPage(page,size);
+        TbBrandExample example = new TbBrandExample();
+        TbBrandExample.Criteria criteria = example.createCriteria();
+        if (brand!=null){
+            if (brand.getName()!=null && brand.getName().length()>0){
+                criteria.andNameLike("%"+brand.getName()+"%");
+            }
+            if (brand.getFirstChar()!=null && brand.getFirstChar().length() >0){
+                criteria.andFirstCharEqualTo(brand.getFirstChar());
+            }
+        }
+        Page<TbBrand> brandPage = (Page<TbBrand>) tbBrandMapper.selectByExample(example);
+        return new PageResoult(brandPage.getTotal(),brandPage.getResult());
     }
 }

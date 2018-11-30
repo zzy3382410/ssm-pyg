@@ -25,40 +25,56 @@ public class BrandController {
     private BrandService brandService;
 
     @RequestMapping("/findAll")
-    public List<TbBrand> findAll(){
+    public List<TbBrand> findAll() {
         return brandService.findAll();
     }
 
 
     @RequestMapping("/findPage")
-    public PageResoult findPage(Integer page,Integer size){
+    public PageResoult findPage(Integer page, Integer size) {
         return brandService.getPageBrand(page, size);
     }
 
     @RequestMapping("/add")
-    public Resoult add(@RequestBody TbBrand brand){
+    public Resoult add(@RequestBody TbBrand brand) {
         try {
             brandService.add(brand);
-            return new Resoult(true,"增加成功");
+            return new Resoult(true, "增加成功");
         } catch (Exception e) {
             e.printStackTrace();
-            return new Resoult(false,"增加失败");
+            return new Resoult(false, "增加失败");
         }
     }
 
     @RequestMapping("/update")
-    public Resoult update(@RequestBody TbBrand brand){
+    public Resoult update(@RequestBody TbBrand brand) {
         try {
             brandService.update(brand);
-            return new Resoult(true,"修改成功");
+            return new Resoult(true, "修改成功");
         } catch (Exception e) {
             e.printStackTrace();
-            return new Resoult(false,"修改失败");
+            return new Resoult(false, "修改失败");
         }
     }
 
     @RequestMapping("/findOne")
-    public TbBrand findOne(Long id){
+    public TbBrand findOne(Long id) {
         return brandService.findOne(id);
+    }
+
+    @RequestMapping("/delete")
+    public Resoult delete(long[] ids) {
+        try {
+            brandService.delete(ids);
+            return new Resoult(true, "删除成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Resoult(false, "删除失败");
+        }
+    }
+
+    @RequestMapping("/search")
+    public PageResoult search(@RequestBody TbBrand brand,int page, int rows){
+        return brandService.findPage(brand,page,rows);
     }
 }

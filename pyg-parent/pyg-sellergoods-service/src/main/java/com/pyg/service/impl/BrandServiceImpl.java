@@ -5,7 +5,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.pyg.mapper.TbBrandMapper;
-import com.pyg.pojo.PageResoult;
+import entity.PageResult;
 import com.pyg.pojo.TbBrand;
 import com.pyg.pojo.TbBrandExample;
 import com.pyg.service.BrandService;
@@ -31,11 +31,11 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public PageResoult getPageBrand(Integer page, Integer rows) {
+    public PageResult getPageBrand(Integer page, Integer rows) {
         PageHelper.startPage(page, rows);
         List<TbBrand> list = tbBrandMapper.selectByExample(new TbBrandExample());
         PageInfo<TbBrand> info = new PageInfo<>(list);
-        return new PageResoult(info.getTotal(), info.getList());
+        return new PageResult(info.getTotal(), info.getList());
     }
 
     @Override
@@ -61,7 +61,7 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public PageResoult findPage(TbBrand brand, Integer page, Integer size) {
+    public PageResult findPage(TbBrand brand, Integer page, Integer size) {
         PageHelper.startPage(page,size);
         TbBrandExample example = new TbBrandExample();
         TbBrandExample.Criteria criteria = example.createCriteria();
@@ -74,6 +74,6 @@ public class BrandServiceImpl implements BrandService {
             }
         }
         Page<TbBrand> brandPage = (Page<TbBrand>) tbBrandMapper.selectByExample(example);
-        return new PageResoult(brandPage.getTotal(),brandPage.getResult());
+        return new PageResult(brandPage.getTotal(),brandPage.getResult());
     }
 }

@@ -1,6 +1,6 @@
 package com.pyg.service;
 
-import com.pyg.pojo.PageResoult;
+import entity.PageResult;
 import com.pyg.pojo.TbBrand;
 
 import java.util.List;
@@ -9,7 +9,7 @@ public interface BrandService {
 
     List<TbBrand> findAll();
 
-    PageResoult getPageBrand(Integer page,Integer rows);
+    PageResult getPageBrand(Integer page, Integer rows);
 
     void add(TbBrand brand);
 
@@ -19,5 +19,5 @@ public interface BrandService {
 
     void delete(long[] ids);
 
-    PageResoult findPage(TbBrand brand,Integer page,Integer size);
+    PageResult findPage(TbBrand brand,Integer page,Integer size);
 }

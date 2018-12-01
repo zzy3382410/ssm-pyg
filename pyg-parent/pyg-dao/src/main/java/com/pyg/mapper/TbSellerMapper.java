@@ -10,7 +10,7 @@ public interface TbSellerMapper {
 
     int deleteByExample(TbSellerExample example);
 
-    int deleteByPrimaryKey(String sellerId);
+    int deleteByPrimaryKey(Long sellerId);
 
     int insert(TbSeller record);
 
@@ -18,7 +18,7 @@ public interface TbSellerMapper {
 
     List<TbSeller> selectByExample(TbSellerExample example);
 
-    TbSeller selectByPrimaryKey(String sellerId);
+    TbSeller selectByPrimaryKey(Long sellerId);
 
     int updateByExampleSelective(@Param("record") TbSeller record, @Param("example") TbSellerExample example);
 

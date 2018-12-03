@@ -18,7 +18,7 @@ public interface TbSellerMapper {
 
     List<TbSeller> selectByExample(TbSellerExample example);
 
-    TbSeller selectByPrimaryKey(Long sellerId);
+    TbSeller selectByPrimaryKey(String sellerId);
 
     int updateByExampleSelective(@Param("record") TbSeller record, @Param("example") TbSellerExample example);
 

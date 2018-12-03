@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://code.alibabatech.com/schema/dubbo
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+        http://www.springframework.org/schema/security
+        http://www.springframework.org/schema/security/spring-security.xsd">
+
+    <!-- 配置不过滤的资源（静态资源及登录相关） -->
+    <security:http security="none" pattern="/shoplogin.html" />
+    <security:http security="none" pattern="/css/**"></security:http>
+    <security:http security="none" pattern="/img/**"></security:http>
+    <security:http security="none" pattern="/js/**"></security:http>
+    <security:http security="none" pattern="/plugins/**"></security:http>
+    <security:http security="none" pattern="/seller/add.do"></security:http>
+
+
+    <security:http auto-config="true" use-expressions="false">
+        <!-- 配置资料连接，表示任意路径都需要ROLE_USER权限 -->
+        <security:intercept-url pattern="/**" access="ROLE_SELLER" />
+        <!-- 自定义登陆页面，login-page 自定义登陆页面 authentication-failure-url 用户权限校验失败之后才会跳转到这个页面，如果数据库中没有这个用户则不会跳转到这个页面。
+            default-target-url 登陆成功后跳转的页面。 注：登陆页面用户名固定 username，密码 password，action:login -->
+        <security:form-login login-page="/shoplogin.html"
+                             login-processing-url="/login" username-parameter="username"
+                             password-parameter="password" authentication-failure-url="/shoplogin.html"
+                             default-target-url="/admin/index.html"
+                             always-use-default-target="true"
+        />
+        <security:logout></security:logout>
+        <!-- 关闭CSRF,默认是开启的 -->
+        <security:csrf disabled="true" />
+        <security:headers>
+            <security:frame-options policy="SAMEORIGIN"/>
+        </security:headers>
+    </security:http>
+
+    <dubbo:application name="pyg-shop-web"/>
+    <!--订阅远程服务,把自己作为服务的消费者-->
+    <dubbo:registry protocol="zookeeper" address="192.168.25.168:2181"/>
+    <!--获取远程服务对象,存放到Spring容器-->
+    <dubbo:reference interface="com.pyg.service.SellerService" id="sellerService"/>
+
+
+    <bean id="userDetailService" class="com.pyg.service.UserDetailsServiceImpl">
+        <!--property属性注入远程服务的资源-->
+        <property name="sellerService" ref="sellerService"/>
+    </bean>
+
+    <security:authentication-manager>
+        <security:authentication-provider user-service-ref="userDetailService">
+            <!--认证的时候进行加密认证，对表单提交的密码明文进行加密之后在认证-->
+        </security:authentication-provider>
+    </security:authentication-manager>
+
+</beans>

@@ -3,6 +3,7 @@ package com.pyg.mapper;
 import com.pyg.pojo.TbSpecification;
 import com.pyg.pojo.TbSpecificationExample;
 import java.util.List;
+import java.util.Map;
 
 import com.pyg.pojogroup.Specification;
 import org.apache.ibatis.annotations.Param;
@@ -29,4 +30,6 @@ public interface TbSpecificationMapper {
     int updateByPrimaryKeySelective(TbSpecification record);
 
     int updateByPrimaryKey(TbSpecification record);
+
+    List<Map> selectOptionList();
 }

@@ -1,5 +1,6 @@
 package com.pyg.service;
 import java.util.List;
+import java.util.Map;
 
 import com.pyg.pojogroup.Specification;
 import entity.PageResult;
@@ -60,5 +61,11 @@ public interface SpecificationService {
 	 * @return
 	 */
 	public PageResult findPage(TbSpecification specification, int pageNum, int pageSize);
+
+	/**
+	 *
+	 * @return
+	 */
+	List<Map> selectOptionList();
 	
 }

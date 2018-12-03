@@ -14,6 +14,7 @@
         <module>pyg-sellergoods-interface</module>
         <module>pyg-sellergoods-service</module>
         <module>pyg-manager-web</module>
+        <module>pyg-shop-web</module>
     </modules>
 
     <!-- 集中定义依赖版本号 -->

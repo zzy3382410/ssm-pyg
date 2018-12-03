@@ -1,5 +1,6 @@
 package com.pyg.web;
 import java.util.List;
+import java.util.Map;
 
 import com.pyg.pojogroup.Specification;
 import com.pyg.service.SpecificationService;
@@ -109,5 +110,11 @@ public class SpecificationController {
 	public PageResult search(@RequestBody TbSpecification specification, int page, int rows  ){
 		return specificationService.findPage(specification, page, rows);		
 	}
+
+
+	@RequestMapping("/selectOptionList")
+	public List<Map> selectOptionList(){
+		return specificationService.selectOptionList();
+	};
 	
 }

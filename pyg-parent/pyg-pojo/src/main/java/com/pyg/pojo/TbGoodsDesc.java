@@ -72,4 +72,17 @@ public class TbGoodsDesc implements Serializable {
     public void setSaleService(String saleService) {
         this.saleService = saleService == null ? null : saleService.trim();
     }
+
+    @Override
+    public String toString() {
+        return "TbGoodsDesc{" +
+                "goodsId=" + goodsId +
+                ", introduction='" + introduction + '\'' +
+                ", specificationItems='" + specificationItems + '\'' +
+                ", customAttributeItems='" + customAttributeItems + '\'' +
+                ", itemImages='" + itemImages + '\'' +
+                ", packageList='" + packageList + '\'' +
+                ", saleService='" + saleService + '\'' +
+                '}';
+    }
 }

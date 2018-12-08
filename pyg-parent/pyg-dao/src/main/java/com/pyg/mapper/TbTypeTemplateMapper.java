@@ -3,6 +3,8 @@ package com.pyg.mapper;
 import com.pyg.pojo.TbTypeTemplate;
 import com.pyg.pojo.TbTypeTemplateExample;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface TbTypeTemplateMapper {
@@ -27,4 +29,8 @@ public interface TbTypeTemplateMapper {
     int updateByPrimaryKeySelective(TbTypeTemplate record);
 
     int updateByPrimaryKey(TbTypeTemplate record);
+
+    List<Map> selectTypeTemplateList();
+
+    Map selectTypeTemplate(Long id);
 }

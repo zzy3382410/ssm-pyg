@@ -1,6 +1,7 @@
 package com.pyg.service;
 import java.util.List;
 
+import entity.Goods;
 import entity.PageResult;
 import com.pyg.pojo.TbGoods;
 
@@ -28,7 +29,7 @@ public interface GoodsService {
 	/**
 	 * 增加
 	*/
-	public void add(TbGoods goods);
+	public void add(Goods goods);
 	
 	
 	/**

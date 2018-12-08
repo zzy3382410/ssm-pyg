@@ -1,16 +1,16 @@
 package com.pyg.web;
 
-import java.util.List;
-import java.util.Map;
-
+import com.alibaba.dubbo.config.annotation.Reference;
+import com.pyg.pojo.TbTypeTemplate;
 import com.pyg.service.TypeTemplateService;
+import entity.PageResult;
+import entity.Result;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.alibaba.dubbo.config.annotation.Reference;
-import com.pyg.pojo.TbTypeTemplate;
-import entity.PageResult;
-import entity.Result;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * controller
@@ -127,6 +127,11 @@ public class TypeTemplateController {
     @RequestMapping("/selectTypeTemplate")
     public Map selectTypeTemplate(Long id) {
         return typeTemplateService.selectTypeTemplate(id);
+    }
+
+    @RequestMapping("/findSpecList")
+    public List<Map> findSpecList(Long id){
+        return typeTemplateService.findSpecList(id);
     }
 
 }

@@ -3,8 +3,10 @@ package com.pyg.web;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.pyg.pojo.TbGoods;
 import com.pyg.service.GoodsService;
+import entity.Goods;
 import entity.PageResult;
 import entity.Result;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -48,8 +50,13 @@ public class GoodsController {
 	 * @return
 	 */
 	@RequestMapping("/add")
-	public Result add(@RequestBody TbGoods goods){
+	public Result add(@RequestBody Goods goods){
+		//获取登录名
+		String name = SecurityContextHolder.getContext().getAuthentication().getName();
+		//设置商家Id
+		goods.getTbGoods().setSellerId(name);
 		try {
+			System.out.println(goods+"=================================");
 			goodsService.add(goods);
 			return new Result(true, "增加成功");
 		} catch (Exception e) {
@@ -102,7 +109,6 @@ public class GoodsController {
 	
 		/**
 	 * 查询+分页
-	 * @param brand
 	 * @param page
 	 * @param rows
 	 * @return

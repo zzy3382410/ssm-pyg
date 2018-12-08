@@ -12,6 +12,7 @@
 
     <!-- 配置不过滤的资源（静态资源及登录相关） -->
     <security:http security="none" pattern="/shoplogin.html" />
+    <security:http security="none" pattern="/register.html" />
     <security:http security="none" pattern="/css/**"></security:http>
     <security:http security="none" pattern="/img/**"></security:http>
     <security:http security="none" pattern="/js/**"></security:http>
@@ -38,6 +39,8 @@
         </security:headers>
     </security:http>
 
+
+
     <dubbo:application name="pyg-shop-web"/>
     <!--订阅远程服务,把自己作为服务的消费者-->
     <dubbo:registry protocol="zookeeper" address="192.168.25.168:2181"/>
@@ -52,8 +55,11 @@
 
     <security:authentication-manager>
         <security:authentication-provider user-service-ref="userDetailService">
+            <security:password-encoder ref="bCryptPasswordEncoder"></security:password-encoder>
             <!--认证的时候进行加密认证，对表单提交的密码明文进行加密之后在认证-->
         </security:authentication-provider>
     </security:authentication-manager>
+
+    <bean id="bCryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"></bean>
 
 </beans>

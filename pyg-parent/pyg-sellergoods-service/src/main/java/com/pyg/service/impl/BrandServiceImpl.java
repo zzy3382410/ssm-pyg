@@ -10,6 +10,7 @@ import com.pyg.pojo.TbBrand;
 import com.pyg.pojo.TbBrandExample;
 import com.pyg.service.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,7 @@ import java.util.Map;
  * @create: 2018-11-27 19:24
  **/
 @Service
+@Transactional
 public class BrandServiceImpl implements BrandService {
 
     @Autowired

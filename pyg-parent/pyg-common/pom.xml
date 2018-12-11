@@ -11,5 +11,18 @@
 
     <artifactId>pyg-common</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.pyg</groupId>
+            <artifactId>pyg-dao</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.pyg</groupId>
+            <artifactId>pyg-pojo</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
 
 </project>

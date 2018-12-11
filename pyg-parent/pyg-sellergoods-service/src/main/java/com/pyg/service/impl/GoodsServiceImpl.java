@@ -16,6 +16,7 @@ import com.github.pagehelper.PageHelper;
 import com.pyg.service.GoodsService;
 
 import entity.PageResult;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 服务实现层
@@ -23,6 +24,7 @@ import entity.PageResult;
  * @author Administrator
  */
 @Service
+@Transactional
 public class GoodsServiceImpl implements GoodsService {
 
     @Autowired
@@ -70,6 +72,7 @@ public class GoodsServiceImpl implements GoodsService {
 
         TbGoods tbGoods = goods.getTbGoods();
         tbGoods.setAuditStatus("0");//为审核状态
+        tbGoods.setIsMarketable("1");//设置为上架状态
         goodsMapper.insert(tbGoods);
 
         TbGoodsDesc goodsDesc = goods.getTbGoodsDesc();
@@ -127,9 +130,21 @@ public class GoodsServiceImpl implements GoodsService {
      * 修改
      */
     @Override
-    public void update(TbGoods goods) {
-        goodsMapper.updateByPrimaryKey(goods);
+    public void update(Goods goods) {
+        goods.getTbGoods().setAuditStatus("0");//更新商品之后设置为为申请状态
+        goodsMapper.updateByPrimaryKey(goods.getTbGoods());
+        goodsDescMapper.updateByPrimaryKey(goods.getTbGoodsDesc());
+
+        //更新item,删除在添加
+        TbItemExample itemExample = new TbItemExample();
+        itemExample.createCriteria().andGoodsIdEqualTo(goods.getTbGoods().getId());
+        itemMapper.deleteByExample(itemExample);
+        TbGoods tbGoods = goods.getTbGoods();
+        List<TbItem> itemList = goods.getItemList();
+        //保存sku列表
+        saveItems(goods, itemList);
     }
+
 
     /**
      * 根据ID获取实体
@@ -138,8 +153,19 @@ public class GoodsServiceImpl implements GoodsService {
      * @return
      */
     @Override
-    public TbGoods findOne(Long id) {
-        return goodsMapper.selectByPrimaryKey(id);
+    public Goods findOne(Long id) {
+        Goods goods = new Goods();
+        TbGoods tbGoods = goodsMapper.selectByPrimaryKey(id);
+        goods.setTbGoods(tbGoods);
+        TbGoodsDesc tbGoodsDesc = goodsDescMapper.selectByPrimaryKey(id);
+        goods.setTbGoodsDesc(tbGoodsDesc);
+        //查询SKU商品列表
+        TbItemExample example=new TbItemExample();
+        com.pyg.pojo.TbItemExample.Criteria criteria = example.createCriteria();
+        criteria.andGoodsIdEqualTo(id);//查询条件：商品ID
+        List<TbItem> itemList = itemMapper.selectByExample(example);
+        goods.setItemList(itemList);
+        return goods;
     }
 
     /**
@@ -147,8 +173,10 @@ public class GoodsServiceImpl implements GoodsService {
      */
     @Override
     public void delete(Long[] ids) {
-        for (Long id : ids) {
-            goodsMapper.deleteByPrimaryKey(id);
+        for(Long id:ids){
+            TbGoods goods = goodsMapper.selectByPrimaryKey(id);
+            goods.setIsDelete("1");
+            goodsMapper.updateByPrimaryKey(goods);
         }
     }
 
@@ -158,10 +186,11 @@ public class GoodsServiceImpl implements GoodsService {
 
         TbGoodsExample example = new TbGoodsExample();
         TbGoodsExample.Criteria criteria = example.createCriteria();
-
+        criteria.andIsDeleteIsNull();//非删除状态
         if (goods != null) {
             if (goods.getSellerId() != null && goods.getSellerId().length() > 0) {
                 criteria.andSellerIdLike("%" + goods.getSellerId() + "%");
+                criteria.andIsMarketableEqualTo("1");
             }
             if (goods.getGoodsName() != null && goods.getGoodsName().length() > 0) {
                 criteria.andGoodsNameLike("%" + goods.getGoodsName() + "%");
@@ -184,9 +213,32 @@ public class GoodsServiceImpl implements GoodsService {
             if (goods.getIsDelete() != null && goods.getIsDelete().length() > 0) {
                 criteria.andIsDeleteLike("%" + goods.getIsDelete() + "%");
             }
+            if (goods.getSellerId()!=null && goods.getSellerId().length()>0){
+                criteria.andSellerIdEqualTo(goods.getSellerId());
+            }
         }
 
         Page<TbGoods> page = (Page<TbGoods>) goodsMapper.selectByExample(example);
         return new PageResult(page.getTotal(), page.getResult());
+    }
+
+    @Override
+    public void updateStatus(Long[] ids, String status) {
+        for(Long id:ids){
+            TbGoods goods = goodsMapper.selectByPrimaryKey(id);
+            goods.setAuditStatus(status);
+            goodsMapper.updateByPrimaryKey(goods);
+        }
+    }
+
+    /**
+     * 下架商品
+     * @param id
+     */
+    @Override
+    public void updateIsMarketable(Long id) {
+        TbGoods goods = goodsMapper.selectByPrimaryKey(id);
+        goods.setIsMarketable("0");
+        goodsMapper.updateByPrimaryKey(goods);
     }
 }

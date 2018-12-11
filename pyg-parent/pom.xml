@@ -16,6 +16,12 @@
         <module>pyg-manager-web</module>
         <module>pyg-shop-web</module>
         <module>pyg-common</module>
+        <module>pyg-content-interface</module>
+        <module>pyg-content-service</module>
+        <module>pyg-portal-web</module>
+        <module>pyg-search-interface</module>
+        <module>pyg-search-service</module>
+        <module>pyg-search-web</module>
     </modules>
 
     <!-- 集中定义依赖版本号 -->
@@ -445,6 +451,11 @@
         <dependency>
             <groupId>xml-apis</groupId>
             <artifactId>xml-apis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-solr</artifactId>
+            <version>1.5.5.RELEASE</version>
         </dependency>
     </dependencies>
 

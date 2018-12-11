@@ -10,6 +10,7 @@ import com.pyg.mapper.TbGoodsDescMapper;
 import com.pyg.pojo.TbGoodsDesc;
 import com.pyg.service.GoodsDescService;
 import entity.PageResult;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 服务实现层
@@ -17,6 +18,7 @@ import entity.PageResult;
  *
  */
 @Service
+@Transactional
 public class GoodsDescServiceImpl implements GoodsDescService {
 
 	@Autowired

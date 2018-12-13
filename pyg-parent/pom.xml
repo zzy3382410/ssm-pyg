@@ -457,6 +457,12 @@
             <artifactId>spring-data-solr</artifactId>
             <version>1.5.5.RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+            <version>3.2</version>
+        </dependency>
+
     </dependencies>
 
 

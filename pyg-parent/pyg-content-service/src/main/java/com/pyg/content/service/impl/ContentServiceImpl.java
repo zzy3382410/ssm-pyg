@@ -1,7 +1,6 @@
 package com.pyg.content.service.impl;
 
 import java.util.List;
-
 import com.pyg.content.service.ContentService;
 import com.pyg.pojo.TbContentExample;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.pyg.mapper.TbContentMapper;
 import com.pyg.pojo.TbContent;
-
 
 import entity.PageResult;
 import org.springframework.data.redis.core.RedisTemplate;

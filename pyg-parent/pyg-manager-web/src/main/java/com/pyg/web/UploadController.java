@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 public class UploadController {
+
     @Value("${FILE_SERVER_URL}")
     private String FILE_SERVER_URL;
 

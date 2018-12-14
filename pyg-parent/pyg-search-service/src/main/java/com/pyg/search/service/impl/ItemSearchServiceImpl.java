@@ -38,6 +38,9 @@ public class ItemSearchServiceImpl implements ItemSearchService {
     @Override
     public Map search(Map searchMap) {
         Map map = new HashMap();
+        //关键字空格处理
+        String keywords = (String) searchMap.get("keywords");
+        searchMap.put("keywords",keywords.replace(" ",""));
 
         //1.查询列表
         map.putAll(searchList(searchMap));
@@ -56,6 +59,21 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         }
 
         return map;
+    }
+
+    @Override
+    public void importList(List list) {
+        solrTemplate.saveBeans(list);
+        solrTemplate.commit();
+    }
+
+    @Override
+    public void deleteByGoodsID(List goodsIdList) {
+        SimpleQuery query = new SimpleQuery();
+        Criteria criteria = new Criteria("item_goodsid").in(goodsIdList);
+        query.addCriteria(criteria);
+        solrTemplate.delete(query);
+        solrTemplate.commit();
     }
 
 
@@ -119,6 +137,21 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         Integer pageNo = (Integer) searchMap.get("pageNo");
         if (pageNo==null){
             pageNo=1;//默认第一页
+        }
+
+        //1,7排序
+        String sortValue = (String) searchMap.get("sort");
+        //排序字段
+        String sortField = (String) searchMap.get("sortField");
+        if (sortValue !=null && sortValue.equals("")){
+            if (sortValue.equals("ASC")){
+                Sort sort = new Sort(Sort.Direction.ASC,"item_"+sortField);
+                query.addSort(sort);
+            }
+            if (sortValue.equals("DESC")){
+                Sort sort = new Sort(Sort.Direction.DESC,"item_"+sortField);
+                query.addSort(sort);
+            }
         }
         //每页记录数
         Integer pageSize = (Integer) searchMap.get("pageSize");
@@ -214,22 +247,5 @@ public class ItemSearchServiceImpl implements ItemSearchService {
 
         return map;
     }
-
-    private void setOrder(Map<String,Object> searchMap,SimpleHighlightQuery query){
-        String sortValue = (String) searchMap.get("sort");
-        //排序字段
-        String sortField = (String) searchMap.get("sortField");
-        if (sortValue !=null && sortValue.equals("")){
-            if (sortValue.equals("ASC")){
-                Sort sort = new Sort(Sort.Direction.ASC,"item_"+sortField);
-                query.addSort(sort);
-            }
-            if (sortValue.equals("DESC")){
-                Sort sort = new Sort(Sort.Direction.DESC,"item_"+sortField);
-                query.addSort(sort);
-            }
-        }
-    }
-
 
 }

@@ -1,4 +1,4 @@
-app.controller('searchController', function ($scope, searchService) {
+app.controller('searchController', function ($scope,$location, searchService) {
     $scope.searchMap = {
         'keywords': '',
         'category': '',
@@ -122,6 +122,26 @@ app.controller('searchController', function ($scope, searchService) {
         $scope.searchMap.pageNo=1;
         $scope.searchMap.sortField=sortField;
         $scope.searchMap.sort=sort;
+        $scope.search();
+    }
+
+
+    //判断关键字是不是品牌
+    $scope.keywordsIsBrand=function () {
+        for (var i=0;i<$scope.resultMap.brandList.length;i++){
+            //如果包含
+            if ($scope.searchMap.keywords.indexOf($scope.resultMap.brandList[i].text)>=0){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    //加载查询字符串
+    $scope.loadkeywords=function(){
+        $scope.searchMap.keywords= $location.search()['keywords'];
+        alert($scope.searchMap.keywords);
         $scope.search();
     }
 });

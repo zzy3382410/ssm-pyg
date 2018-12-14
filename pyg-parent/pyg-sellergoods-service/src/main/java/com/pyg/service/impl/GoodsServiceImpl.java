@@ -1,9 +1,7 @@
 package com.pyg.service.impl;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.lang.reflect.Array;
+import java.util.*;
 
 import com.alibaba.fastjson.JSON;
 import com.pyg.mapper.*;
@@ -240,5 +238,14 @@ public class GoodsServiceImpl implements GoodsService {
         TbGoods goods = goodsMapper.selectByPrimaryKey(id);
         goods.setIsMarketable("0");
         goodsMapper.updateByPrimaryKey(goods);
+    }
+
+    @Override
+    public List<TbItem> findItemListByGoodsIdandStatus(Long[] goodsIds, String status) {
+        TbItemExample example = new TbItemExample();
+        TbItemExample.Criteria criteria = example.createCriteria();
+        criteria.andGoodsIdIn(Arrays.asList(goodsIds));
+        criteria.andStatusEqualTo(status);
+        return itemMapper.selectByExample(example);
     }
 }

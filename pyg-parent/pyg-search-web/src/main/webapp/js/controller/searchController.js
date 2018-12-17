@@ -141,7 +141,6 @@ app.controller('searchController', function ($scope,$location, searchService) {
     //加载查询字符串
     $scope.loadkeywords=function(){
         $scope.searchMap.keywords= $location.search()['keywords'];
-        alert($scope.searchMap.keywords);
         $scope.search();
     }
 });

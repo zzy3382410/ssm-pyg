@@ -25,6 +25,9 @@
         <module>pyg-page-interface</module>
         <module>pyg-page-service</module>
         <module>pyg-page-web</module>
+        <module>pyg-user-interface</module>
+        <module>pyg-user-service</module>
+        <module>pyg-user-web</module>
     </modules>
 
     <!-- 集中定义依赖版本号 -->

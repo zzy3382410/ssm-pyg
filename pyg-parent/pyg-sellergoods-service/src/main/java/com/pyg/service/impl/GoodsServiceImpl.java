@@ -181,7 +181,6 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public PageResult findPage(TbGoods goods, int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-
         TbGoodsExample example = new TbGoodsExample();
         TbGoodsExample.Criteria criteria = example.createCriteria();
         criteria.andIsDeleteIsNull();//非删除状态

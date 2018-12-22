@@ -170,7 +170,7 @@
                         <div class="fl">
                             <ul class="btn-choose unstyled">
                                 <li>
-                                    <a href="cart.html" target="_blank" ng-click="addToCart()" class="sui-btn  btn-danger addshopcar">加入购物车</a>
+                                    <a ng-click="addToCart()" class="sui-btn  btn-danger addshopcar">加入购物车</a>
                                 </li>
                             </ul>
                         </div>

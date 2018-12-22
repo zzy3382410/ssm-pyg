@@ -28,6 +28,13 @@
         <module>pyg-user-interface</module>
         <module>pyg-user-service</module>
         <module>pyg-user-web</module>
+        <module>pyg-cart-interface</module>
+        <module>pyg-cart-service</module>
+        <module>pyg-cart-web</module>
+        <module>pyg-order-interface</module>
+        <module>pyg-order-service</module>
+        <module>pyg-pay-interface</module>
+        <module>pyg-pay-service</module>
     </modules>
 
     <!-- 集中定义依赖版本号 -->
@@ -467,6 +474,11 @@
             <groupId>commons-collections</groupId>
             <artifactId>commons-collections</artifactId>
             <version>3.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.wxpay</groupId>
+            <artifactId>wxpay-sdk</artifactId>
+            <version>0.0.3</version>
         </dependency>
 
     </dependencies>

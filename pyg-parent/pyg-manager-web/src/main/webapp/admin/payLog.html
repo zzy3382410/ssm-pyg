@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>管理</title>
+    <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="../plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../plugins/adminLTE/css/AdminLTE.css">
+    <link rel="stylesheet" href="../plugins/adminLTE/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="../plugins/angularjs/angular.min.js"></script>
+    <!-- 分页组件开始 -->
+    <script src="../plugins/angularjs/pagination.js"></script>
+    <link rel="stylesheet" href="../plugins/angularjs/pagination.css">
+    <!-- 分页组件结束 -->
+
+    <script type="text/javascript" src="../js/base_pagination.js"></script>
+    <script type="text/javascript" src="../js/service/payLogService.js"></script>
+    <script type="text/javascript" src="../js/controller/baseController.js"></script>
+    <script type="text/javascript" src="../js/controller/payLogController.js"></script>
+
+</head>
+<body class="hold-transition skin-red sidebar-mini" ng-app="pinyougou" ng-controller="payLogController">
+<!-- .box-body -->
+<div class="box-header with-border">
+    <h3 class="box-title">管理</h3>
+</div>
+
+<div class="box-body">
+
+    <!-- 数据表格 -->
+    <div class="table-box">
+
+        <!--工具栏-->
+        <div>
+            <div class="form-group form-inline" class="pull-left">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default" title="新建" data-toggle="modal"
+                            data-target="#editModal" ng-click="entity={}"><i class="fa fa-file-o"></i> 新建
+                    </button>
+                    <button type="button" class="btn btn-default" title="删除" ng-click="dele()"><i
+                            class="fa fa-trash-o"></i> 删除
+                    </button>
+                    <button type="button" class="btn btn-default" title="刷新" onclick="window.location.reload();"><i
+                            class="fa fa-refresh"></i> 刷新
+                    </button>
+                </div>
+                <div class="box-tools pull-right">
+                    <div class="has-feedback">
+                        状态：<select ng-model="searchEntity.tradeState">
+                        <option value="">全部</option>
+                        <option value="0">未支付</option>
+                        <option value="1">已支付</option>
+                    </select>
+                        订单号:<input ng-model="searchEntity.orderList"/>
+                        支付用户:<input ng-model="searchEntity.userId"/>
+                        <button type="button" ng-click="reloadList()" class="btn btn-default">查询</button>
+                    </div>
+                </div>
+            </div>
+            <!--工具栏/-->
+            <div class="pull-left">
+                <!--数据列表-->
+                <table id="dataList" class="table table-bordered table-striped table-hover dataTable">
+                    <thead>
+                    <tr>
+                        <th class="" style="padding-right:0px">
+                            <input id="selall" type="checkbox" class="icheckbox_square-blue">
+                        </th>
+                        <th class="sorting">支付订单号</th>
+                        <th class="sorting">创建日期</th>
+                        <th class="sorting">支付完成时间</th>
+                        <th class="sorting">支付金额（分）</th>
+                        <th class="sorting">用户ID</th>
+                        <th class="sorting">交易号码</th>
+                        <th class="sorting">交易状态</th>
+                        <th class="sorting">订单编号列表</th>
+                        <th class="sorting">支付类型</th>
+
+                        <th class="text-center">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="entity in list">
+                        <td><input type="checkbox" ng-click="updateSelection($event,entity.out_trade_no)"></td>
+                        <td>{{entity.outTradeNo}}</td>
+                        <td>{{entity.createTime}}</td>
+                        <td>{{entity.payTime}}</td>
+                        <td>{{entity.totalFee}}</td>
+                        <td>{{entity.userId}}</td>
+                        <td>{{entity.transactionId}}</td>
+                        <td>{{entity.tradeState}}</td>
+                        <td>{{entity.orderList}}</td>
+                        <td>{{entity.payType}}</td>
+
+                        <td class="text-center">
+                            <button type="button" class="btn bg-olive btn-xs" data-toggle="modal"
+                                    data-target="#editModal"
+                                    ng-click="findOne(entity.out_trade_no)">修改
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <!--数据列表/-->
+            </div>
+        </div>
+        <!-- 数据表格 /-->
+        <!-- 分页 -->
+
+    </div>
+    <div class="pull-left">
+        <tm-pagination conf="paginationConf"></tm-pagination>
+    </div>
+
+    <!-- /.box-body -->
+
+    <!-- 编辑窗口 -->
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h3 id="myModalLabel">编辑</h3>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered table-striped" width="800px">
+                        <tr>
+
+                            <td>创建日期</td>
+
+                            <td><input class="form-control" ng-model="entity.createTime" placeholder="创建日期"></td>
+
+                        </tr>
+                        <tr>
+
+                            <td>支付完成时间</td>
+
+                            <td><input class="form-control" ng-model="entity.payTime" placeholder="支付完成时间"></td>
+
+                        </tr>
+                        <tr>
+
+                            <td>支付金额（分）</td>
+
+                            <td><input class="form-control" ng-model="entity.totalFee" placeholder="支付金额（分）"></td>
+
+                        </tr>
+                        <tr>
+
+                            <td>用户ID</td>
+
+                            <td><input class="form-control" ng-model="entity.userId" placeholder="用户ID"></td>
+
+                        </tr>
+                        <tr>
+
+                            <td>交易号码</td>
+
+                            <td><input class="form-control" ng-model="entity.transactionId" placeholder="交易号码"></td>
+
+                        </tr>
+                        <tr>
+
+                            <td>交易状态</td>
+
+                            <td><input class="form-control" ng-model="entity.tradeState" placeholder="交易状态"></td>
+
+                        </tr>
+                        <tr>
+
+                            <td>订单编号列表</td>
+
+                            <td><input class="form-control" ng-model="entity.orderList" placeholder="订单编号列表"></td>
+
+                        </tr>
+                        <tr>
+
+                            <td>支付类型</td>
+
+                            <td><input class="form-control" ng-model="entity.payType" placeholder="支付类型"></td>
+
+                        </tr>
+
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" data-dismiss="modal" aria-hidden="true" ng-click="save()">保存
+                    </button>
+                    <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
